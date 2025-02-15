@@ -1,19 +1,28 @@
-from kivymd.app import MDApp
-from kivy.lang import Builder
+from kivy.app import App
+from kivy.uix.button import Button
+from requests import get
+from time import sleep
+import threading
 
-class SampleApp(MDApp):
-    
+class MeuApp(App):
     def build(self):
-        self.appKv='''
-MDScreen:
-    MDLabel:
-        text:'Hello,World.'
-        multiline:True
-        color:"blue"
-        halign:'center'         
-'''
-        AppScreen=Builder.load_string(self.appKv)
-        return AppScreen
+        return Button(text="Olá, Mundo!")
 
-SampleApp().run()
-    
+def req():
+    while 1:
+        try:
+            sleep(3)
+            response = get('http://localhost:8080/soueu')
+        except Exception as e:
+            print(e)
+
+
+if __name__ == '__main__':
+    thread = threading.Thread(target=req)
+    thread.daemon = True
+    # Inicia a thread
+    thread.start()
+    # Espera pela thread terminar
+    print("Thread principal finalizada")
+
+    MeuApp().run()
