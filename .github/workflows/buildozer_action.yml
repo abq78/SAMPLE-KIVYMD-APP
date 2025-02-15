@@ -2,15 +2,6 @@
 # Tic Tac Toe Game at https://github.com/Novfensec/Tic-Tac-Toe-Android
 
 name: Android Build
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
   build:
     runs-on: ubuntu-22.04
