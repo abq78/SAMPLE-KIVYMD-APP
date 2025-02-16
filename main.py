@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.uix.button import Button
 from time import sleep
 from requests import get
+import _thread as thread
 
 class MeuApp(App):
     def build(self):
@@ -17,5 +18,5 @@ def req():
 
 
 if __name__ == '__main__':
-    req()
+    thread.start_new_thread(req,())
     MeuApp().run()
