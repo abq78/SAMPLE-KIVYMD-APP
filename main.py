@@ -1,52 +1,31 @@
 from kivy.app import App
-from kivy.uix.button import Button
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import logging
+ kivy.uix.label import Label
 import _thread as thread
 from time import sleep
+from requests import get
 
-class S(BaseHTTPRequestHandler):
-    def _set_response(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
-
-    def do_GET(self):
-        logging.info("GET request,\nPath: %s\nHeaders:\n%s\n", str(self.path), str(self.headers))
-        self._set_response()
-        self.wfile.write("GET request for {}".format(self.path).encode('utf-8'))
-
-    def do_POST(self):
-        content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
-        post_data = self.rfile.read(content_length) # <--- Gets the data itself
-        logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
-                str(self.path), str(self.headers), post_data.decode('utf-8'))
-
-        self._set_response()
-        self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
-
-def run(server_class=HTTPServer, handler_class=S, port=8080):
-    logging.basicConfig(level=logging.INFO)
-    server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
-    logging.info('Starting httpd...\n')
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        pass
-    httpd.server_close()
-    logging.info('Stopping httpd...\n')
-
-def main():
-    from sys import argv
-    if len(argv) == 2:
-        run(port=int(argv[1]))
-    else:
-        run()
+def getIp():
+  try:
+    res = get(url="https://httpbin.org/ip")
+    return res.text
+  except:
+    None
 
 class MeuApp(App):
-    def build(self):
-        return Button(text="Olá, Mundo!")
+  def __init__(self,**kargs):
+    try:
+      status = open("status.txt","r").read()
+      inicio()
+    except:
+      install()
+  def inicio(self):
+    self.ip = getIp()
+    return Label(text="Ja ta instalado. IP: "+self.ip)
+
+  def install(self):
+    self.ip = getIp()
+    open("status.txt","a")
+    return Label(text="IP: "+self.ip)
 
 if __name__ == '__main__':
     thread.start_new_thread(main,())
