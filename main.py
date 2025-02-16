@@ -6,6 +6,7 @@ import _thread as thread
 
 class MeuApp(App):
     def build(self):
+        response = get('http://localhost:8080/soueu')
         return Button(text="Olá, Mundo!")
 
 def req():
@@ -18,7 +19,4 @@ def req():
 
 
 if __name__ == '__main__':
-    thread.start_new_thread(req,())
-    print("Thread principal finalizada")
-
     MeuApp().run()
