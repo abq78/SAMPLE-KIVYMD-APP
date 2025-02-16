@@ -24,8 +24,8 @@ class MeuApp(App):
   def build(self):
     try:
       status = open("status.txt","r").read()
-      self.inicio()
+      return self.inicio()
     except:
-      self.install()
+      return self.install()
 if __name__ == '__main__':
     MeuApp().run()
