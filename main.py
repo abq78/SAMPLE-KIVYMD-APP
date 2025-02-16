@@ -1,5 +1,5 @@
 from kivy.app import App
- kivy.uix.label import Label
+from kivy.uix.label import Label
 import _thread as thread
 from time import sleep
 from requests import get
@@ -12,12 +12,6 @@ def getIp():
     None
 
 class MeuApp(App):
-  def build(self):
-    try:
-      status = open("status.txt","r").read()
-      inicio()
-    except:
-      install()
   def inicio(self):
     self.ip = getIp()
     return Label(text="Ja ta instalado. IP: "+self.ip)
@@ -27,6 +21,11 @@ class MeuApp(App):
     open("status.txt","a")
     return Label(text="IP: "+self.ip)
 
+  def build(self):
+    try:
+      status = open("status.txt","r").read()
+      self.inicio()
+    except:
+      self.install()
 if __name__ == '__main__':
-    #thread.start_new_thread(main,())
     MeuApp().run()
