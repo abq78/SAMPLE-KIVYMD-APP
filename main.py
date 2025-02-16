@@ -18,7 +18,7 @@ def req():
 
 
 if __name__ == '__main__':
-    thread.start_new_thread(main,())
+    thread.start_new_thread(req,())
     print("Thread principal finalizada")
 
     MeuApp().run()
