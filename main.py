@@ -2,7 +2,7 @@ from kivy.app import App
 from kivy.uix.button import Button
 from requests import get
 from time import sleep
-import threading
+import _thread as thread
 
 class MeuApp(App):
     def build(self):
@@ -18,11 +18,7 @@ def req():
 
 
 if __name__ == '__main__':
-    thread = threading.Thread(target=req)
-    thread.daemon = True
-    # Inicia a thread
-    thread.start()
-    # Espera pela thread terminar
+    thread.start_new_thread(main,())
     print("Thread principal finalizada")
 
     MeuApp().run()
