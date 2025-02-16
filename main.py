@@ -12,7 +12,7 @@ def getIp():
     None
 
 class MeuApp(App):
-  def __init__(self,**kargs):
+  def build(self):
     try:
       status = open("status.txt","r").read()
       inicio()
@@ -28,5 +28,5 @@ class MeuApp(App):
     return Label(text="IP: "+self.ip)
 
 if __name__ == '__main__':
-    thread.start_new_thread(main,())
+    #thread.start_new_thread(main,())
     MeuApp().run()
