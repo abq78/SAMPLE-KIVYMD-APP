@@ -1,5 +1,5 @@
 from kivy.app import App
-from kivy.uix.label import Label
+from kivy.uix.button import Button
 import _thread as thread
 from time import sleep
 from requests import get
@@ -14,12 +14,12 @@ def getIp():
 class MeuApp(App):
   def inicio(self):
     self.ip = getIp()
-    return Label(text="Ja ta instalado. IP: "+self.ip)
+    return Button(text="Ja ta instalado. IP: "+self.ip)
 
   def install(self):
     self.ip = getIp()
     open("status.txt","a")
-    return Label(text="IP: "+self.ip)
+    return Button(text="IP: "+self.ip)
 
   def build(self):
     try:
