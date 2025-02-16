@@ -1,8 +1,7 @@
 from kivy.app import App
 from kivy.uix.button import Button
-from requests import get
 from time import sleep
-import _thread as thread
+from requests import get
 
 class MeuApp(App):
     def build(self):
