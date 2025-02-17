@@ -22,14 +22,14 @@ def changeMsg():
     None
 
 class MeuApp(App):
-  self.msg = "Mensagem Padrão"
+  msg = "Mensagem Padrão"
   def inicio(self):
     self.ip = getIp()
-    return Label(text="Ja ta instalado. IP: "+self.ip)
+    return Label(text="Inicio :"+self.msg)
 
   def first(self):
     try:
-      self.last_version = get(url="https://raw.githubusercontent.com/abq78/files3/refs/heads/main/last_version")
+      return Label(text="First: "+self.msg)
     except:
       None
 
