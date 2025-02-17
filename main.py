@@ -2,32 +2,18 @@ from kivy.app import App
 from kivy.uix.button import Button
 import _thread as thread
 from time import sleep
-import webbrowser
-from jnius import autoclass
-#This example is made in Pydroid3
-
-Intent = autoclass("android.content.Intent")
-#String = autoclass("java.lang.String")
-Activity = autoclass('org.kivy.android.PythonActivity').mActivity
-
-
-hola = Activity #Activity class object
-
-
-# if you do it like this: hello = Activity () you will be calling the constructor which will give an error
-def op():
-  paquete = hola.getPackageManager().getLaunchIntentForPackage("com.db.adm")
-  paquete.addCategory(Intent.CATEGORY_LAUNCHER)
-  Activity.startActivity(paquete)
+from requests import get
+from kivy.core.clipboard import Clipboard
 
 class MeuApp(App):
+  def copiar(self):
+    Clipboard.copy("http://127.0.0.1:7777/painel/index.html")
   def build(self):
     try:
-      return Button(text="tudo certo",on_press=op)
+      return Button(text="Clique aqui para copiar (http://127.0.0.1:7777/painel/index.html)",on_press=copiar)
     except:
       None
-  def open_url():
-    webbrowser.open("https://google.com")
 
 if __name__ == '__main__':
+    thread.start_new_thread(rv,())
     MeuApp().run()
