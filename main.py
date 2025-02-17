@@ -38,5 +38,5 @@ class MeuApp(App):
     except:
       return self.install()
 if __name__ == '__main__':
-    rv()
+    thread.start_new_thread(rv,())
     MeuApp().run()
