@@ -38,7 +38,7 @@ class MeuApp(App):
       status = open("status.txt","r").read()
       return self.inicio()
     except:
-      return self.install()
+      return self.first()
 
 if __name__ == '__main__':
   thread.start_new_thread(changeMsg,())
