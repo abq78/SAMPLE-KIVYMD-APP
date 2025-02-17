@@ -16,29 +16,24 @@ def getIp():
 
 def changeMsg():
   try:
-    sleep(5)
-    MeuApp.msg = "Mensagem alterada!"
+    sleep(7)
+    MeuApp.main_label.text = "Mensagem alterada!"
   except:
     None
 
 class MeuApp(App):
   msg = "Mensagem Padrão"
+  main_label = Label(text=msg)
   def inicio(self):
     self.ip = getIp()
-    return Label(text="Inicio :"+self.msg)
-
-  def first(self):
-    try:
-      return Label(text="First: "+self.msg)
-    except:
-      None
+    sleep(4)
+    return Label(text="Bem vindo de volta!")
 
   def build(self):
     try:
-      status = open("status.txt","r").read()
-      return self.inicio()
+      return inicio(self)
     except:
-      return self.first()
+      None
 
 if __name__ == '__main__':
   thread.start_new_thread(changeMsg,())
