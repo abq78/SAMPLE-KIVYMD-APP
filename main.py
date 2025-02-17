@@ -1,33 +1,34 @@
-from kivy.app import App
-from kivy.uix.label import Label
-import _thread as thread
-from time import sleep
-import requests
-import _thread as thread
-import os
-import platform
-from pyjnius import autoclass
 
-def open_url(url):
-    Intent = autoclass('android.content.Intent')
-    Uri = autoclass('android.net.Uri')
-    browserIntent = Intent()
-    browserIntent.setAction(Intent.ACTION_VIEW)
-    browserIntent.setData(Uri.parse(url))
-    currentActivity = cast('android.app.Activity', mActivity)
-    currentActivity.startActivity(browserIntent)
-
-
-class MeuApp(App):
-  def inicio(self):
-    return Label(text="Bem vindo de volta!")
-
-  def build(self):
-    try:
-      return inicio(self)
-    except:
-      None
-
-if __name__ == '__main__':
-  open_url("https://google.com")
-  MeuApp().run()
+import kivy                                                                                     
+from kivy.app import App                                                                        
+from kivy.lang import Builder                                                                   
+from kivy.utils import platform                                                                 
+from kivy.uix.widget import Widget                                                              
+from kivy.clock import Clock                                                                    
+from jnius import autoclass                                                                     
+from android.runnable import run_on_ui_thread                                                   
+                                                                                                
+WebView = autoclass('android.webkit.WebView')                                                   
+WebViewClient = autoclass('android.webkit.WebViewClient')                                       
+activity = autoclass('org.kivy.android.PythonActivity').mActivity                              
+                                                                                                
+class Wv(Widget):                                                                               
+    def __init__(self, **kwargs):                                                               
+        super(Wv, self).__init__(**kwargs)                                                      
+        Clock.schedule_once(self.create_webview, 0)                                             
+                                                                                                
+    @run_on_ui_thread                                                                           
+    def create_webview(self, *args):                                                            
+        webview = WebView(activity)                                                             
+        webview.getSettings().setJavaScriptEnabled(True)                                        
+        wvc = WebViewClient();                                                                  
+        webview.setWebViewClient(wvc);                                                          
+        activity.setContentView(webview)                                                        
+        webview.loadUrl('http://www.google.com')
+                                                                                                
+class ServiceApp(App):                                                                          
+    def build(self):                                                                            
+        return Wv()                                                                             
+                                                                                                
+if __name__ == '__main__':                                                                      
+    ServiceApp().run()
