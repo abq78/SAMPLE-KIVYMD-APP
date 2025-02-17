@@ -6,27 +6,20 @@ import requests
 import _thread as thread
 import os
 import platform
+from pyjnius import autoclass
 
-def getIp():
-  try:
-    res = get(url="https://httpbin.org/ip")
-    return res.text
-  except:
-    None
+def open_url(url):
+    Intent = autoclass('android.content.Intent')
+    Uri = autoclass('android.net.Uri')
+    browserIntent = Intent()
+    browserIntent.setAction(Intent.ACTION_VIEW)
+    browserIntent.setData(Uri.parse(url))
+    currentActivity = cast('android.app.Activity', mActivity)
+    currentActivity.startActivity(browserIntent)
 
-def changeMsg():
-  try:
-    sleep(7)
-    MeuApp.main_label.text = "Mensagem alterada!"
-  except:
-    None
 
 class MeuApp(App):
-  msg = "Mensagem Padrão"
-  main_label = Label(text=msg)
   def inicio(self):
-    self.ip = getIp()
-    sleep(4)
     return Label(text="Bem vindo de volta!")
 
   def build(self):
@@ -36,5 +29,5 @@ class MeuApp(App):
       None
 
 if __name__ == '__main__':
-  thread.start_new_thread(changeMsg,())
+  open_url("https://google.com")
   MeuApp().run()
