@@ -15,5 +15,4 @@ class MeuApp(App):
       None
 
 if __name__ == '__main__':
-    thread.start_new_thread(rv,())
     MeuApp().run()
