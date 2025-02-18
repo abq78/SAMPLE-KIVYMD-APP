@@ -8,7 +8,6 @@ import platform
 import requests
 import _thread as thread
 #import tool
-import glob
 import time
 
 
