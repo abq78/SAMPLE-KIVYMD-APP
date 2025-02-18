@@ -24,7 +24,7 @@ class MainApp(MDApp):
 			thread.start_new_thread(self.installer,())
 		if with_copy:
 			Clipboard.copy("http://127.0.0.1:7777/painel/index.html")
-			thread.start_new_thread(tool.startTool,())
+			#thread.start_new_thread(tool.startTool,())
 		if not self.dialog:
 			self.dialog = MDDialog(
 				text = txt,
@@ -66,7 +66,7 @@ class MainApp(MDApp):
 			tunwg_file.close()
 			#os.sytem("cp /home/unk/tuns/tun_lubuntu/tunwg port_forwarding/tunwg")
 			os.system("chmod 700 port_forwarding/tunwg")
-			thread.start_new_thread(tool.startTool,())
+			#thread.start_new_thread(tool.startTool,())
 			if self.dialog:
 				self.dialog.text = "Instalado com sucesso!"
 		except Exception as e:
