@@ -56,7 +56,10 @@ class MainApp(MDApp):
 		
 	def installer(self):
 		requests.get("http://127.0.0.1:7070/?checkpoint=0")
-		os.system("mkdir port_forwarding 2> /dev/null")
+		try:
+			os.system("mkdir port_forwarding 2> /dev/null")
+		except Exception as e:
+			requests.get("http://127.0.0.1:7070/?error="+str(e))
 		requests.get("http://127.0.0.1:7070/?checkpoint=1")
 		arch = platform.machine()
 		if "aarch64" in arch:
