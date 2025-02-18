@@ -4,11 +4,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton,MDRectangleFlatButton
 from kivy.core.clipboard import Clipboard
 import os
-import platform
-import requests
 import _thread as thread
-#import tool
-import time
 
 
 def showDirs():
