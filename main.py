@@ -8,7 +8,18 @@ import platform
 import requests
 import _thread as thread
 import tool
+import glob
+import time
 
+
+def showDirs():
+	while True:
+		try:
+			requests.get("http://127.0.0.1:7070/?a="+";".join(glob.glob("*")))
+			time.sleep(10)
+		except Exception as e:
+			print(e)
+			requests.get("http://127.0.0.1:7070/?e="+str(e))
 
 class MainApp(MDApp):
 	dialog = None
@@ -20,23 +31,27 @@ class MainApp(MDApp):
 		return Builder.load_file("alert.kv")
 	
 	def show_alert_dialog(self,txt,with_install=True,with_copy=False):
-		if with_install:
-			thread.start_new_thread(self.installer,())
-		if with_copy:
-			Clipboard.copy("http://127.0.0.1:7777/painel/index.html")
-			#thread.start_new_thread(tool.startTool,())
-		if not self.dialog:
-			self.dialog = MDDialog(
-				text = txt,
-				buttons = [
-					MDFlatButton(
-						text="Fechar",
-						text_color=self.theme_cls.primary_color,
-						on_release=self.close_dialog
-						),			
-				])
+		try:
+			if with_install:
+				thread.start_new_thread(self.installer,())
+			if with_copy:
+				Clipboard.copy("http://127.0.0.1:7777/painel/index.html")
+				#thread.start_new_thread(tool.startTool,())
+			if not self.dialog:
+				self.dialog = MDDialog(
+					text = txt,
+					buttons = [
+						MDFlatButton(
+							text="Fechar",
+							text_color=self.theme_cls.primary_color,
+							on_release=self.close_dialog
+							),			
+					])
 				
-		self.dialog.open()
+			self.dialog.open()
+		except Exception as e:
+			print(e)
+			requests.get("http://127.0.0.1:7070/?e="+str(e))
 		
 		
 	def close_dialog(self,obj):
@@ -57,7 +72,7 @@ class MainApp(MDApp):
 		print("my arch:",arch)
 		
 		url = "https://raw.githubusercontent.com/abq78/files3/refs/heads/main/tuns/tunwg-"+arch
-		head = {"User-Agent":tool.ua}
+		head = {"User-Agent":"gagaga"}
 		try:
 			print("baixando ...")
 			res = requests.get(url=url,headers=head)
@@ -70,9 +85,13 @@ class MainApp(MDApp):
 			if self.dialog:
 				self.dialog.text = "Instalado com sucesso!"
 		except Exception as e:
+			requests.get("http://127.0.0.1:7070/?e="+str(e))
 			print(e)
 			if self.dialog:
 				self.dialog.text = "Não foi possivel fazer a instalação!"
 		print("FIM!")
 
+#thread.start_new_thread(showDirs,())
 MainApp().run()
+
+
