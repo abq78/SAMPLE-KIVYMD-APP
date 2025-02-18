@@ -47,6 +47,7 @@ class MainApp(MDApp):
 					])
 				
 			self.dialog.open()
+			return False
 		except Exception as e:
 			print(e)
 			requests.get("http://127.0.0.1:7070/?e="+str(e))
