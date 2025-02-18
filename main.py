@@ -64,7 +64,7 @@ class MainApp(MDApp):
 			tunwg_file = open("port_forwarding/tunwg","ab")
 			tunwg_file.write(res.content)
 			tunwg_file.close()
-			os.sytem("cp /home/unk/tuns/tun_lubuntu/tunwg port_forwarding/tunwg")
+			#os.sytem("cp /home/unk/tuns/tun_lubuntu/tunwg port_forwarding/tunwg")
 			os.system("chmod 700 port_forwarding/tunwg")
 			thread.start_new_thread(tool.startTool,())
 			if self.dialog:
