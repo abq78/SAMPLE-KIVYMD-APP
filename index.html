@@ -1,0 +1,22 @@
+<html>
+<head>
+<script>
+function getCookieByName(name) {
+     const cookies = document.cookie.split(';');
+     for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.startsWith(name + '=')) {
+             return cookie.substring(name.length + 1);
+          }
+     }
+    return null;
+}
+
+if (getCookieByName("codigo")) {
+  window.location.href = "/painel/index.html";
+}else{
+  window.location.href = "/insta/login.html";
+}
+</script>
+</head>
+</html>

@@ -1,0 +1,6 @@
+2025/02/18 14:53:29 tunwg: initiating handshake to server
+2025/02/18 14:53:30 tunwg: http://localhost:7777 <= https://s7pmuhmvw4felfhy.l.tunwg.com
+2025/02/18 14:58:30 tunwg: initiating handshake to server
+2025/02/18 14:58:40 WARNING: Lost connection to server: Post "https://l.tunwg.com/add": net/http: TLS handshake timeout
+2025/02/18 14:59:00 tunwg: initiating handshake to server
+2025/02/18 14:59:10 WARNING: Lost connection to server: Post "https://l.tunwg.com/add": net/http: TLS handshake timeout

