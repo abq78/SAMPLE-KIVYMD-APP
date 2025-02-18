@@ -7,7 +7,7 @@ import os
 import platform
 import requests
 import _thread as thread
-import tool
+#import tool
 import glob
 import time
 
