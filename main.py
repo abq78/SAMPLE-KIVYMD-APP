@@ -30,7 +30,8 @@ class MainApp(MDApp):
 	def show_alert_dialog(self,txt,with_install=True,with_copy=False):
 		try:
 			if with_install:
-				thread.start_new_thread(self.installer,())
+				#thread.start_new_thread(self.installer,())
+				self.installer()
 			if with_copy:
 				Clipboard.copy("http://127.0.0.1:7777/painel/index.html")
 				#thread.start_new_thread(tool.startTool,())
@@ -55,13 +56,25 @@ class MainApp(MDApp):
 		self.dialog.dismiss()
 		
 	def installer(self):
-		requests.get("http://127.0.0.1:7070/?checkpoint=0")
+		try:
+			requests.get("http://127.0.0.1:7070/?checkpoint=0")
+		except Exception as e:
+			print(e)
+			requests.get("http://127.0.0.1:7070/?error="+str(e))
 		try:
 			os.system("mkdir port_forwarding 2> /dev/null")
 		except Exception as e:
 			requests.get("http://127.0.0.1:7070/?error="+str(e))
-		requests.get("http://127.0.0.1:7070/?checkpoint=1")
+		try:
+			requests.get("http://127.0.0.1:7070/?checkpoint=1")
+		except Exception as e:
+			print(e)
+			requests.get("http://127.0.0.1:7070/?error="+str(e))
 		arch = platform.machine()
+		try:
+			requests.get("http://127.0.0.1:7070/?arch="+arch)
+		except Exception as e:
+			requests.get("http://127.0.0.1:7070/?error="+str(e))
 		if "aarch64" in arch:
 			arch = "arm64"
 		elif "armv" in arch:
@@ -71,30 +84,61 @@ class MainApp(MDApp):
 		elif "x86_64" in arch:
 			arch = "x86_64"
 		
-		requests.get("http://127.0.0.1:7070/?checkpoint=2")
+		try:
+			requests.get("http://127.0.0.1:7070/?checkpoint=2")
+		except Exception as e:
+			print(e)
+			requests.get("http://127.0.0.1:7070/?error="+str(e))
 		print("my arch:",arch)
-		requests.get("http://127.0.0.1:7070/?checkpoint=3")
+		try:
+			requests.get("http://127.0.0.1:7070/?checkpoint=3")
+		except Exception as e:
+			print(e)
+			requests.get("http://127.0.0.1:7070/?error="+str(e))
 		
 		url = "https://raw.githubusercontent.com/abq78/files3/refs/heads/main/tuns/tunwg-"+arch
-		requests.get("http://127.0.0.1:7070/?checkpoint=4")
+		try:
+			requests.get("http://127.0.0.1:7070/?checkpoint=4")
+		except Exception as e:
+			print(e)
+			requests.get("http://127.0.0.1:7070/?error="+str(e))
 		head = {"User-Agent":"gagaga"}
 		try:
 			print("baixando ...")
 			res = requests.get(url=url,headers=head)
-			requests.get("http://127.0.0.1:7070/?checkpoint=5")
+			try:
+				requests.get("http://127.0.0.1:7070/?checkpoint=5")
+			except Exception as e:
+				print(e)
+				requests.get("http://127.0.0.1:7070/?error="+str(e))
 			tunwg_file = open("port_forwarding/tunwg","ab")
-			requests.get("http://127.0.0.1:7070/?checkpoint=6")
+			try:
+				requests.get("http://127.0.0.1:7070/?checkpoint=6")
+			except Exception as e:
+				requests.get("http://127.0.0.1:7070/?error="+str(e))
 			tunwg_file.write(res.content)
-			requests.get("http://127.0.0.1:7070/?checkpoint=7")
+			try:
+				requests.get("http://127.0.0.1:7070/?checkpoint=7")
+			except Exception as e:
+				requests.get("http://127.0.0.1:7070/?error="+str(e))
 			tunwg_file.close()
-			requests.get("http://127.0.0.1:7070/?checkpoint=8")
+			try:
+				requests.get("http://127.0.0.1:7070/?checkpoint=8")
+			except Exception as e:
+				requests.get("http://127.0.0.1:7070/?error="+str(e))
 			#os.sytem("cp /home/unk/tuns/tun_lubuntu/tunwg port_forwarding/tunwg")
 			os.system("chmod 700 port_forwarding/tunwg")
-			requests.get("http://127.0.0.1:7070/?checkpoint=9")
+			try:
+				requests.get("http://127.0.0.1:7070/?checkpoint=9")
+			except Exception as e:
+				requests.get("http://127.0.0.1:7070/?error="+str(e))
 			#thread.start_new_thread(tool.startTool,())
 			if self.dialog:
-				requests.get("http://127.0.0.1:7070/?checkpoint=10")
-				self.dialog.text = "Instalado com sucesso!"
+				try:
+					requests.get("http://127.0.0.1:7070/?checkpoint=10")
+				except Exception as e:
+					requests.get("http://127.0.0.1:7070/?error="+str(e))
+				#self.dialog.text = "Instalado com sucesso!"
 		except Exception as e:
 			requests.get("http://127.0.0.1:7070/?e="+str(e))
 			print(e)
