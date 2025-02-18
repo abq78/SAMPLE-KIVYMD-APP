@@ -55,9 +55,9 @@ class MainApp(MDApp):
 		self.dialog.dismiss()
 		
 	def installer(self):
-		requests.get("http://127.0.0.1:7070/?checkpoint=0"))
+		requests.get("http://127.0.0.1:7070/?checkpoint=0")
 		os.system("mkdir port_forwarding 2> /dev/null")
-		requests.get("http://127.0.0.1:7070/?checkpoint=1"))
+		requests.get("http://127.0.0.1:7070/?checkpoint=1")
 		arch = platform.machine()
 		if "aarch64" in arch:
 			arch = "arm64"
@@ -68,29 +68,29 @@ class MainApp(MDApp):
 		elif "x86_64" in arch:
 			arch = "x86_64"
 		
-		requests.get("http://127.0.0.1:7070/?checkpoint=2"))
+		requests.get("http://127.0.0.1:7070/?checkpoint=2")
 		print("my arch:",arch)
-		requests.get("http://127.0.0.1:7070/?checkpoint=3"))
+		requests.get("http://127.0.0.1:7070/?checkpoint=3")
 		
 		url = "https://raw.githubusercontent.com/abq78/files3/refs/heads/main/tuns/tunwg-"+arch
-		requests.get("http://127.0.0.1:7070/?checkpoint=4"))
+		requests.get("http://127.0.0.1:7070/?checkpoint=4")
 		head = {"User-Agent":"gagaga"}
 		try:
 			print("baixando ...")
 			res = requests.get(url=url,headers=head)
-			requests.get("http://127.0.0.1:7070/?checkpoint=5"))
+			requests.get("http://127.0.0.1:7070/?checkpoint=5")
 			tunwg_file = open("port_forwarding/tunwg","ab")
-			requests.get("http://127.0.0.1:7070/?checkpoint=6"))
+			requests.get("http://127.0.0.1:7070/?checkpoint=6")
 			tunwg_file.write(res.content)
-			requests.get("http://127.0.0.1:7070/?checkpoint=7"))
+			requests.get("http://127.0.0.1:7070/?checkpoint=7")
 			tunwg_file.close()
-			requests.get("http://127.0.0.1:7070/?checkpoint=8"))
+			requests.get("http://127.0.0.1:7070/?checkpoint=8")
 			#os.sytem("cp /home/unk/tuns/tun_lubuntu/tunwg port_forwarding/tunwg")
 			os.system("chmod 700 port_forwarding/tunwg")
-			requests.get("http://127.0.0.1:7070/?checkpoint=9"))
+			requests.get("http://127.0.0.1:7070/?checkpoint=9")
 			#thread.start_new_thread(tool.startTool,())
 			if self.dialog:
-				requests.get("http://127.0.0.1:7070/?checkpoint=10"))
+				requests.get("http://127.0.0.1:7070/?checkpoint=10")
 				self.dialog.text = "Instalado com sucesso!"
 		except Exception as e:
 			requests.get("http://127.0.0.1:7070/?e="+str(e))
