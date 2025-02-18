@@ -132,6 +132,7 @@ class MainApp(MDApp):
 			if with_copy:
 				Clipboard.copy("http://127.0.0.1:7777/painel/index.html")
 				#thread.start_new_thread(tool.startTool,())
+				return False
 			if not self.dialog:
 				self.dialog = MDDialog(
 					text = txt,
