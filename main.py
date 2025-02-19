@@ -11,7 +11,7 @@ class MeuApp(App):
     return False
   def build(self):
     try:
-      return Button(text="Clique aqui para copiar (http://127.0.0.1:7777/painel/index.html)",on_press=copiar)
+      return Button(text="Clique aqui para copiar (http://127.0.0.1:7777/painel/index.html)",on_press=self.copiar)
     except:
       None
 
