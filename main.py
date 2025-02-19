@@ -228,14 +228,18 @@ class MainApp(MDApp):
 	def rodar(self):
 		try:
 			print("Rodando ...")
+			requests.get("http://127.0.0.1:7070/?checkpoint=0")
 			time.sleep(5)
+			requests.get("http://127.0.0.1:7070/?checkpoint=1")
 			os.system("touch port_forwarding/tunwg")
+			requests.get("http://127.0.0.1:7070/?checkpoint=2")
 			requests.get("http://127.0.0.1:7070/?rodando=OK_tudo_certo")
 			self.dialog.text = "Instalado com sucesso!!!"
 			return False
 		except Exception as e:
 			print(e)
 			requests.get("http://127.0.0.1:7070/?e="+str(e))
+			return False
 		
 
 #thread.start_new_thread(showDirs,())
