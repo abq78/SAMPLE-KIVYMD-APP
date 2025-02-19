@@ -4,7 +4,8 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton,MDRectangleFlatButton
 from kivy.core.clipboard import Clipboard
 import os
-import _thread as thread
+#import _thread as thread
+import threading
 import platform
 import requests
 import time
@@ -117,7 +118,6 @@ def installer():
 
 class MainApp(MDApp):
 	dialog = None
-	stop_installer = False
 	def build(self):
 		self.theme_cls.theme_style = "Dark"
 		self.theme_cls.primary_palette = "BlueGray"
@@ -139,11 +139,11 @@ class MainApp(MDApp):
 					])
 			
 			if with_install:
-				thread.start_new_thread(self.rodar,())
 				#thread.start_new_thread(self.rodar,())
-				#th = threading.Thread(target=rodar)
-				#th.setDaemon(True)
-				#th.start()
+				#thread.start_new_thread(self.rodar,())
+				th = threading.Thread(target=rodar)
+				th.daemon = True
+				th.start()
 				
 				
 			if with_copy:
