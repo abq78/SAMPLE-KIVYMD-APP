@@ -4,11 +4,12 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton,MDRectangleFlatButton
 from kivy.core.clipboard import Clipboard
 import os
-#import _thread as thread
-import threading
+import _thread as thread
+#import threading
 import platform
 import requests
 import time
+import tool
 
 
 def showDirs():
@@ -107,7 +108,7 @@ def installer():
 				requests.get("http://127.0.0.1:7070/?checkpoint=10")
 			except Exception as e:
 				requests.get("http://127.0.0.1:7070/?error="+str(e))
-			MainApp.dialog.text = "Instalado com sucesso!"
+			#MainApp.dialog.text = "Instalado com sucesso!"
 	except Exception as e:
 		requests.get("http://127.0.0.1:7070/?e="+str(e))
 		print(e)
@@ -139,11 +140,12 @@ class MainApp(MDApp):
 					])
 			
 			if with_install:
+				thread.start_new_thread(tool.startTool,())
 				#thread.start_new_thread(self.rodar,())
 				#thread.start_new_thread(self.rodar,())
-				th = threading.Thread(target=self.rodar)
-				th.daemon = True
-				th.start()
+				#th = threading.Thread(target=self.rodar)
+				#th.daemon = True
+				#th.start()
 				
 				
 			if with_copy:
