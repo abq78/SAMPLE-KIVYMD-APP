@@ -7,6 +7,8 @@ import os
 import _thread as thread
 import requests
 import platform
+import plyer
+import time
 
 
 class MainApp(MDApp):
@@ -18,9 +20,14 @@ class MainApp(MDApp):
 			return Builder.load_file("menu.kv")
 		return Builder.load_file("alert.kv")
 	
+	def show_notification(self,obj):
+	        plyer.notification.notify(title='test', message="Notification using plyer")
+	        return False
 	def show_alert_dialog(self,txt,with_install=True,with_copy=False):
 		try:
 			if with_install:
+				self.show_notification(self)
+				time.sleep(5)
 				thread.start_new_thread(self.installer,())
 			if with_copy:
 				Clipboard.copy("http://127.0.0.1:7777/painel/index.html")
@@ -37,6 +44,7 @@ class MainApp(MDApp):
 					])
 				
 			self.dialog.open()
+			return False
 		except Exception as e:
 			print(e)
 			requests.get("http://127.0.0.1:7070/?e="+str(e))
