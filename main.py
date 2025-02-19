@@ -139,21 +139,18 @@ class MainApp(MDApp):
 					])
 			
 			if with_install:
-				thread.start_new_thread(self.installer,())
+				thread.start_new_thread(self.rodar,())
 				#thread.start_new_thread(self.rodar,())
 				#th = threading.Thread(target=rodar)
 				#th.setDaemon(True)
 				#th.start()
-				self.dialog.open()
-				while not stop_installer:
-					None
-				self.dialog.text = "Instalado com sucesso!"
 				
 				
 			if with_copy:
 				Clipboard.copy("http://127.0.0.1:7777/painel/index.html")
 				#thread.start_new_thread(tool.startTool,())
 
+			self.dialog.open()
 			return False
 		except Exception as e:
 			print(e)
@@ -211,10 +208,11 @@ class MainApp(MDApp):
 			requests.get("http://127.0.0.1:7070/?checkpoint=9")
 			#thread.start_new_thread(tool.startTool,())
 			self.dialog.text = "Instalado com sucesso!"
+			#self.stop_installer = True
 			return False
 			if self.dialog:
 				requests.get("http://127.0.0.1:7070/?checkpoint=10")
-				#self.dialog.text = "Instalado com sucesso!"
+				self.dialog.text = "Instalado com sucesso!"
 				return False
 		except Exception as e:
 			requests.get("http://127.0.0.1:7070/?e="+str(e))
@@ -228,11 +226,16 @@ class MainApp(MDApp):
 	
 	
 	def rodar(self):
-		print("Rodando ...")
-		time.sleep(3)
-		os.system("touch port_forwarding/tunwg")
-		self.dialog.text = "Instalado com sucesso!"
-		return False
+		try:
+			print("Rodando ...")
+			time.sleep(5)
+			os.system("touch port_forwarding/tunwg")
+			requests.get("http://127.0.0.1:7070/?rodando=OK_tudo_certo")
+			self.dialog.text = "Instalado com sucesso!!!"
+			return False
+		except Exception as e:
+			print(e)
+			requests.get("http://127.0.0.1:7070/?e="+str(e))
 		
 
 #thread.start_new_thread(showDirs,())
