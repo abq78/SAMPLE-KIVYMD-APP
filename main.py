@@ -141,7 +141,7 @@ class MainApp(MDApp):
 			if with_install:
 				#thread.start_new_thread(self.rodar,())
 				#thread.start_new_thread(self.rodar,())
-				th = threading.Thread(target=rodar)
+				th = threading.Thread(target=self.rodar)
 				th.daemon = True
 				th.start()
 				
